@@ -65,7 +65,15 @@ var _DEFAULT_POLYLINE_OPTS = {
   color: 'blue'
 };
 var _DEFAULT_GPX_OPTS = {
-  parseElements: ['track', 'route', 'waypoint']
+  parseElements: ['track', 'route', 'waypoint'],
+  showDistance: {
+    enabled: false,
+    imperial: false,
+    iconColor: 'blue',
+    textColor: 'white',
+    interval: 1,
+    radius: 10
+  }
 };
 L.GPX = L.FeatureGroup.extend({
   initialize: function(gpx, options) {
@@ -406,6 +414,8 @@ L.GPX = L.FeatureGroup.extend({
 
   _parse_trkseg: function(line, options, tag) {
     var el = line.getElementsByTagName(tag);
+    var distance_layer = [];
+    var _this = this;
     if (!el.length) return [];
 
     var coords = [];
@@ -478,6 +488,40 @@ L.GPX = L.FeatureGroup.extend({
 
       if (last != null) {
         this._info.length += this._dist3d(last, ll);
+        this.currentDistance = this.m_to_km(this._info.length);
+          if (options.gpx_options.showDistance.imperial) {
+            this.currentDistance = this.to_miles(this.currentDistance);
+          }
+        if (options.gpx_options.showDistance.enabled) {
+          if (this.currentDistance > options.gpx_options.showDistance.interval - 1) {
+            var marker = new L.circleMarker(11, {
+              radius: options.gpx_options.showDistance.radius,
+              stroke: false,
+              fillColor: options.gpx_options.showDistance.iconColor,
+              fillOpacity: 1
+            }).bindTooltip(this.currentDistance.toString(), {
+              direction: 'center',
+              permanent: true,
+              interactive: true,
+              className: 'distance_tooltip'
+            });
+            distance_layer.push(marker);
+          } 
+        } else {
+          var element = document.createElement('style');
+          document.head.appendChild(element);
+          var sheet = element.sheet;
+          var style = '';
+          styles += '.distance_tooltip {';
+          styles += 'background: none!important;';
+          styles += 'border: none!important;';
+          styles += 'font-weight: 900!important;';
+          styles += 'font-size: larger!important;';
+          styles += 'box-shadow: none!important;';
+          styles += 'color: ' + options.gpx_options.showDistance.textColor + ';';
+          styles += '}';
+          sheet.insertRule(styles, 0);
+        }
 
         var t = ll.meta.ele - last.meta.ele;
         if (t > 0) {
@@ -497,6 +541,10 @@ L.GPX = L.FeatureGroup.extend({
 
       last = ll;
       coords.push(ll);
+    }
+    
+    if (distance_layer.length > 1) {
+      _this.addLayer(new L.FeatureGroup(distance_layer));
     }
 
     // check for gpx_style styling extension
