@@ -511,7 +511,7 @@ L.GPX = L.FeatureGroup.extend({
           var element = document.createElement('style');
           document.head.appendChild(element);
           var sheet = element.sheet;
-          var style = '';
+          var styles = '';
           styles += '.distance_tooltip {';
           styles += 'background: none!important;';
           styles += 'border: none!important;';
