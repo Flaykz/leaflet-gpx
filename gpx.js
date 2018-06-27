@@ -489,7 +489,7 @@ L.GPX = L.FeatureGroup.extend({
 
       if (last != null) {
         this._info.length += this._dist3d(last, ll);
-        this.currentDistance += this.m_to_km(this._info.length);
+        this.currentDistance = this.m_to_km(this._info.length);
           if (options.gpx_options.showDistance.imperial) {
             this.currentDistance = this.to_miles(this.currentDistance);
           }
