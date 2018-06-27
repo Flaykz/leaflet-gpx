@@ -598,7 +598,7 @@ L.GPX = L.FeatureGroup.extend({
         var colorThresholds = ['#0000FF', '#0040FF', '#0080FF', '#00FFB0',
           '#00E000', '#80FF00', '#FFFF00', '#FFC000', '#FF0000'];
       }
-      var coordsPolyline = [];
+      var coordsPolyline = [[]];
       for (let j = 0, lenCoords = coords.length; j < lenCoords; j++) {
         for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
           if (coords[j].meta.ele <= valueThresholds[i]) {
