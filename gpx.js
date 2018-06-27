@@ -416,6 +416,7 @@ L.GPX = L.FeatureGroup.extend({
     var el = line.getElementsByTagName(tag);
     var distance_layer = [];
     var _this = this;
+    this.currentDistance = 0;
     if (!el.length) return [];
 
     var coords = [];
@@ -488,18 +489,19 @@ L.GPX = L.FeatureGroup.extend({
 
       if (last != null) {
         this._info.length += this._dist3d(last, ll);
-        this.currentDistance = this.m_to_km(this._info.length);
+        this.currentDistance += this.m_to_km(this._dist3d(last, ll));
           if (options.gpx_options.showDistance.imperial) {
             this.currentDistance = this.to_miles(this.currentDistance);
           }
         if (options.gpx_options.showDistance.enabled) {
-          if (this.currentDistance > options.gpx_options.showDistance.interval - 1) {
-            var marker = new L.circleMarker(11, {
+          if (this.currentDistance > options.gpx_options.showDistance.interval) {
+            this.currentDistance = 0;
+            var marker = new L.circleMarker(ll, {
               radius: options.gpx_options.showDistance.radius,
               stroke: false,
               fillColor: options.gpx_options.showDistance.iconColor,
               fillOpacity: 1
-            }).bindTooltip(this.currentDistance.toString(), {
+            }).bindTooltip(this._info.length.toFixed(0).toString(), {
               direction: 'center',
               permanent: true,
               interactive: true,
