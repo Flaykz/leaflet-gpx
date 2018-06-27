@@ -514,6 +514,7 @@ L.GPX = L.FeatureGroup.extend({
 
       if (last != null) {
         this._info.length += this._dist3d(last, ll);
+        ll.meta.dist = this._info.length;
         if (options.gpx_options.showDistance.enabled) {
           this.currentDistance = this.m_to_km(this._info.length);
           if (options.gpx_options.showDistance.imperial) {
@@ -558,23 +559,21 @@ L.GPX = L.FeatureGroup.extend({
       coords.push(ll);
     }
     
+    var altTab = [];
+    for (var i = 0, coord = coords[i], lenCoords = coords.length;i < lenCoords; i++) {
+      altTab.push({x: i, y: coord.meta.ele});
+    }
     var chart = new CanvasJS.Chart("chart_1", {
       theme: "light1", // "light2", "dark1", "dark2"
     	animationEnabled: true, // change to true		
     	title:{
-    		text: "Basic Column Chart"
+    		text: "altitude"
     	},
     	data: [
     	{
     		// Change type to "bar", "area", "spline", "pie",etc.
     		type: "area",
-    		dataPoints: [
-    			{ x: 1,  y: 10  },
-    			{ x: 2, y: 15  },
-    			{ x: 3, y: 25  },
-    			{ x: 3.5,  y: 30  },
-    			{ x: 4,  y: 28  }
-    		]
+    		dataPoints: altTab
     	}
     	]
     });
