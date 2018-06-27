@@ -573,6 +573,14 @@ L.GPX = L.FeatureGroup.extend({
     }
 
     // add track
+    var ele_max = this.get_elevation_max();
+    var ele_min = this.get_elevation_min();
+    if (options.gpx_options.showDistance.imperial) {
+      ele_max = this.get_elevation_max_imp();
+      ele_min = this.get_elevation_min_imp();
+    }
+    var diff = ele_max - ele_min;
+    
     var l = new L.Polyline(coords, this._merge_objs(polyline_options, options.polyline_options));
     this.fire('addline', { line: l, element: line });
     layers.push(l);
