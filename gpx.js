@@ -73,6 +73,12 @@ var _DEFAULT_GPX_OPTS = {
     textColor: 'white',
     interval: 1,
     radius: 10
+  },
+  showColor: {
+    enabled: true,
+    imperial: false,
+    data: 'alt',
+    thresholds: []
   }
 };
 L.GPX = L.FeatureGroup.extend({
@@ -573,17 +579,49 @@ L.GPX = L.FeatureGroup.extend({
     }
 
     // add track
-    var ele_max = this.get_elevation_max();
-    var ele_min = this.get_elevation_min();
-    if (options.gpx_options.showDistance.imperial) {
-      ele_max = this.get_elevation_max_imp();
-      ele_min = this.get_elevation_min_imp();
+    if (options.gpx_options.showColor.enabled) {
+      if (options.gpx_options.showColor.thresholds.length > 0) {
+        //
+      } else {
+        var ele_max = this.get_elevation_max();
+        var ele_min = this.get_elevation_min();
+        if (options.gpx_options.showDistance.imperial) {
+          ele_max = this.get_elevation_max_imp();
+          ele_min = this.get_elevation_min_imp();
+        }
+        var diff = ele_max - ele_min;
+        let sep = diff / 9;
+        var valueThresholds = [];
+        for (let i = 1; i <= 9; i++) {
+          valueThresholds.push(ele_min + (sep * i));
+        }
+        var colorThresholds = ['#0000FF', '#0040FF', '#0080FF', '#00FFB0',
+          '#00E000', '#80FF00', '#FFFF00', '#FFC000', '#FF0000'];
+      }
+      var coordsPolyline = [];
+      for (let j = 0, lenCoords = coords.length; j < lenCoords; j++) {
+        for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
+          if (coords[j].meta.ele <= valueThresholds[i]) {
+            coordsPolyline[i].push(coords[j]);
+          }
+        }
+      }
+      for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
+        var polyline_options_override = {
+  				color: colorThresholds[i],
+  				opacity: 0.75,
+  				weight: 3,
+  				lineCap: 'round'
+  			};
+        var l = new L.Polyline(coordsPolyline[i], this._merge_objs(polyline_options, polyline_options_override));
+        this.fire('addline', { line: l, element: line });
+        layers.push(l);
+      }
+    } else {
+      var l = new L.Polyline(coords, this._merge_objs(polyline_options, options.polyline_options));
+      this.fire('addline', { line: l, element: line });
+      layers.push(l);
     }
-    var diff = ele_max - ele_min;
-    
-    var l = new L.Polyline(coords, this._merge_objs(polyline_options, options.polyline_options));
-    this.fire('addline', { line: l, element: line });
-    layers.push(l);
 
     if (options.marker_options.startIcon || options.marker_options.startIconUrl) {
       // add start pin
