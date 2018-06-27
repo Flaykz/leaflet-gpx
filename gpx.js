@@ -416,13 +416,32 @@ L.GPX = L.FeatureGroup.extend({
     var el = line.getElementsByTagName(tag);
     var distance_layer = [];
     var _this = this;
-    var distance_iterator = 1;
     if (!el.length) return [];
 
     var coords = [];
     var markers = [];
     var layers = [];
     var last = null;
+    
+    if (options.gpx_options.showDistance.enabled) {
+      var distance_iterator = 1;
+      var distanceMarkers = new L.FeatureGroup();
+      var element = document.createElement('style');
+      document.head.appendChild(element);
+      var sheet = element.sheet;
+      var styles = '';
+      styles += '.distance_tooltip {';
+      styles += 'background: none!important;';
+      styles += 'border: none!important;';
+      styles += 'font-weight: 900!important;';
+      styles += 'font-size: larger!important;';
+      styles += 'box-shadow: none!important;';
+      styles += 'color: ' + options.gpx_options.showDistance.textColor + ';';
+      styles += '}';
+      sheet.insertRule(styles, 0);
+    }
+    
+    
 
     for (var i = 0; i < el.length; i++) {
       var _, ll = new L.LatLng(
@@ -489,11 +508,11 @@ L.GPX = L.FeatureGroup.extend({
 
       if (last != null) {
         this._info.length += this._dist3d(last, ll);
-        this.currentDistance = this.m_to_km(this._info.length);
+        if (options.gpx_options.showDistance.enabled) {
+          this.currentDistance = this.m_to_km(this._info.length);
           if (options.gpx_options.showDistance.imperial) {
             this.currentDistance = this.to_miles(this.currentDistance);
           }
-        if (options.gpx_options.showDistance.enabled) {
           let next_distance = options.gpx_options.showDistance.interval * distance_iterator;
           if (this.currentDistance > next_distance) {
             distance_iterator += 1;
@@ -509,21 +528,8 @@ L.GPX = L.FeatureGroup.extend({
               className: 'distance_tooltip'
             });
             distance_layer.push(marker);
+            distance_layer.addTo(distanceMarkers);
           } 
-        } else {
-          var element = document.createElement('style');
-          document.head.appendChild(element);
-          var sheet = element.sheet;
-          var styles = '';
-          styles += '.distance_tooltip {';
-          styles += 'background: none!important;';
-          styles += 'border: none!important;';
-          styles += 'font-weight: 900!important;';
-          styles += 'font-size: larger!important;';
-          styles += 'box-shadow: none!important;';
-          styles += 'color: ' + options.gpx_options.showDistance.textColor + ';';
-          styles += '}';
-          sheet.insertRule(styles, 0);
         }
 
         var t = ll.meta.ele - last.meta.ele;
@@ -546,10 +552,12 @@ L.GPX = L.FeatureGroup.extend({
       coords.push(ll);
     }
     
-    if (distance_layer.length > 1) {
-      _this.addLayer(new L.FeatureGroup(distance_layer));
+    if (options.gpx_options.showDistance.enabled) {
+      if (distance_layer.length > 1) {
+        _this.addLayer(distanceMarkers);
+      }
     }
-
+    
     // check for gpx_style styling extension
     var polyline_options = this._merge_objs(_DEFAULT_POLYLINE_OPTS, {});
     var e = line.getElementsByTagNameNS(_GPX_STYLE_NS, 'line');
