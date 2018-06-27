@@ -590,7 +590,7 @@ L.GPX = L.FeatureGroup.extend({
           ele_min = this.get_elevation_min_imp();
         }
         var diff = ele_max - ele_min;
-        let sep = diff / 9;
+        var sep = diff / 9;
         var valueThresholds = [];
         for (let i = 1; i <= 9; i++) {
           valueThresholds.push(ele_min + (sep * i));
@@ -598,11 +598,15 @@ L.GPX = L.FeatureGroup.extend({
         var colorThresholds = ['#0000FF', '#0040FF', '#0080FF', '#00FFB0',
           '#00E000', '#80FF00', '#FFFF00', '#FFC000', '#FF0000'];
       }
-      var coordsPolyline = [[]];
+      var coordsPolyline = {};
       for (let j = 0, lenCoords = coords.length; j < lenCoords; j++) {
         for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
-          if (coords[j].meta.ele <= valueThresholds[i]) {
-            coordsPolyline[i].push(coords[j]);
+          if ((coords[j].meta.ele <= valueThresholds[i]) && (valueThresholds[i] - coords[j].meta.ele <= sep)) {
+            if (coordsPolyline[valueThresholds[i]] == undefined) {
+              coordsPolyline[valueThresholds[i]] = coords[j];
+            } else {
+              coordsPolyline[valueThresholds[i]].push(coords[j]);
+            }
           }
         }
       }
