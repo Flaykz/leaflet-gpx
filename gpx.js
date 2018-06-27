@@ -528,7 +528,7 @@ L.GPX = L.FeatureGroup.extend({
               className: 'distance_tooltip'
             });
             distance_layer.push(marker);
-            distance_layer.addTo(distanceMarkers);
+            marker.addTo(distanceMarkers);
           } 
         }
 
