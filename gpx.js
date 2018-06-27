@@ -605,6 +605,11 @@ L.GPX = L.FeatureGroup.extend({
         for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
           if ((coords[j].meta.ele <= valueThresholds[i]) && (valueThresholds[i] - coords[j].meta.ele <= sep)) {
             if (lastColor != i) {
+              if (coordsPolyline[segment] == undefined) {
+                coordsPolyline[segment] = [coords[j]];
+              } else {
+                coordsPolyline[segment].push(coords[j]);
+              }
               segment += 1;
               if (coordsPolyline.color == undefined) {
                 coordsPolyline.color = [colorThresholds[i]];
