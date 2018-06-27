@@ -558,6 +558,28 @@ L.GPX = L.FeatureGroup.extend({
       coords.push(ll);
     }
     
+    var chart = new CanvasJS.Chart("chart_1", {
+      theme: "light1", // "light2", "dark1", "dark2"
+    	animationEnabled: true, // change to true		
+    	title:{
+    		text: "Basic Column Chart"
+    	},
+    	data: [
+    	{
+    		// Change type to "bar", "area", "spline", "pie",etc.
+    		type: "area",
+    		dataPoints: [
+    			{ x: 1,  y: 10  },
+    			{ x: 2, y: 15  },
+    			{ x: 3, y: 25  },
+    			{ x: 3.5,  y: 30  },
+    			{ x: 4,  y: 28  }
+    		]
+    	}
+    	]
+    });
+    chart.render();
+    
     if (options.gpx_options.showDistance.enabled) {
       if (distance_layer.length > 1) {
         distanceMarkers.addTo(this);
