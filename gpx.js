@@ -617,7 +617,7 @@ L.GPX = L.FeatureGroup.extend({
   				weight: 3,
   				lineCap: 'round'
   			};
-        var l = new L.Polyline(coordsPolyline[i], this._merge_objs(polyline_options, polyline_options_override));
+        var l = new L.Polyline(coordsPolyline[valueThresholds[i]], this._merge_objs(polyline_options, polyline_options_override));
         this.fire('addline', { line: l, element: line });
         layers.push(l);
       }
