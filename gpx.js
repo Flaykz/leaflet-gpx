@@ -425,7 +425,7 @@ L.GPX = L.FeatureGroup.extend({
     
     if (options.gpx_options.showDistance.enabled) {
       var distance_iterator = 1;
-      var distanceMarkers = new L.FeatureGroup();
+      var distanceMarkers = new L.featureGroup();
       var element = document.createElement('style');
       document.head.appendChild(element);
       var sheet = element.sheet;
@@ -554,7 +554,7 @@ L.GPX = L.FeatureGroup.extend({
     
     if (options.gpx_options.showDistance.enabled) {
       if (distance_layer.length > 1) {
-        _this.addLayer(distanceMarkers);
+        distanceMarkers.addTo(this);
       }
     }
     
