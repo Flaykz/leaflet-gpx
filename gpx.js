@@ -599,25 +599,33 @@ L.GPX = L.FeatureGroup.extend({
           '#00E000', '#80FF00', '#FFFF00', '#FFC000', '#FF0000'];
       }
       var coordsPolyline = {};
+      var lastColor = null;
+      var segment = 0;
       for (let j = 0, lenCoords = coords.length; j < lenCoords; j++) {
         for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
           if ((coords[j].meta.ele <= valueThresholds[i]) && (valueThresholds[i] - coords[j].meta.ele <= sep)) {
-            if (coordsPolyline[valueThresholds[i]] == undefined) {
-              coordsPolyline[valueThresholds[i]] = [coords[j]];
-            } else {
-              coordsPolyline[valueThresholds[i]].push(coords[j]);
+            if (lastColor != i) {
+              segment += 1;
             }
+            if (coordsPolyline[segment] == undefined) {
+              coordsPolyline[segment] = [coords[j]];
+              coordsPolyline.color = [colorThresholds[i]];
+            } else {
+              coordsPolyline[segment].push(coords[j]);
+              coordsPolyline.color.push(colorThresholds[i]);
+            }
+            lastColor = i;
           }
         }
       }
-      for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
+      for (let i = 0, lenValue = coordsPolyline.color.length; i < lenValue; i++) {
         var polyline_options_override = {
-  				color: colorThresholds[i],
+  				color: coordsPolyline.color[i],
   				opacity: 0.75,
   				weight: 3,
   				lineCap: 'round'
   			};
-        var l = new L.Polyline(coordsPolyline[valueThresholds[i]], this._merge_objs(polyline_options, polyline_options_override));
+        var l = new L.Polyline(coordsPolyline[i+1], this._merge_objs(polyline_options, polyline_options_override));
         this.fire('addline', { line: l, element: line });
         layers.push(l);
       }
