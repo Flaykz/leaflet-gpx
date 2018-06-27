@@ -606,26 +606,29 @@ L.GPX = L.FeatureGroup.extend({
           if ((coords[j].meta.ele <= valueThresholds[i]) && (valueThresholds[i] - coords[j].meta.ele <= sep)) {
             if (lastColor != i) {
               segment += 1;
+              if (coordsPolyline.color == undefined) {
+                coordsPolyline.color = [colorThresholds[i]];
+              } else {
+                coordsPolyline.color.push(colorThresholds[i]);
+              }
             }
             if (coordsPolyline[segment] == undefined) {
               coordsPolyline[segment] = [coords[j]];
-              coordsPolyline.color = [colorThresholds[i]];
             } else {
               coordsPolyline[segment].push(coords[j]);
-              coordsPolyline.color.push(colorThresholds[i]);
             }
             lastColor = i;
           }
         }
       }
-      for (let i = 0, lenValue = coordsPolyline.color.length; i < lenValue; i++) {
+      for (let i = 1; i <= segment; i++) {
         var polyline_options_override = {
-  				color: coordsPolyline.color[i],
+  				color: coordsPolyline.color[i-1],
   				opacity: 0.75,
   				weight: 3,
   				lineCap: 'round'
   			};
-        var l = new L.Polyline(coordsPolyline[i+1], this._merge_objs(polyline_options, polyline_options_override));
+        var l = new L.Polyline(coordsPolyline[i], this._merge_objs(polyline_options, polyline_options_override));
         this.fire('addline', { line: l, element: line });
         layers.push(l);
       }
