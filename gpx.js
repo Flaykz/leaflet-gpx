@@ -603,7 +603,7 @@ L.GPX = L.FeatureGroup.extend({
         for (let i = 0, lenValue = valueThresholds.length; i < lenValue; i++) {
           if ((coords[j].meta.ele <= valueThresholds[i]) && (valueThresholds[i] - coords[j].meta.ele <= sep)) {
             if (coordsPolyline[valueThresholds[i]] == undefined) {
-              coordsPolyline[valueThresholds[i]] = coords[j];
+              coordsPolyline[valueThresholds[i]] = [coords[j]];
             } else {
               coordsPolyline[valueThresholds[i]].push(coords[j]);
             }
