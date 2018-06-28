@@ -560,8 +560,8 @@ L.GPX = L.FeatureGroup.extend({
     }
     
     var altTab = [];
-    for (var i = 0, coord = coords[i], lenCoords = coords.length;i < lenCoords; i++) {
-      altTab.push({x: i, y: coord.meta.ele});
+    for (var i = 0, lenCoords = coords.length;i < lenCoords; i++) {
+      altTab.push({x: i, y: coords[i].meta.ele});
     }
     var chart = new CanvasJS.Chart("chart_1", {
       theme: "light1", // "light2", "dark1", "dark2"
