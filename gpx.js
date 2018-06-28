@@ -559,14 +559,20 @@ L.GPX = L.FeatureGroup.extend({
       coords.push(ll);
     }
     
+    var altTab = [];
+    var chartObj = {};
+    chartObj.ele = [];
+    chartObj.hr = [];
+    for (var i = 0, lenCoords = coords.length;i < lenCoords; i++) {
+      altTab.push({x: i, y: coords[i].meta.ele});
+      chartObj.ele.push({x: i, y: coords[i].meta.ele});
+      chartObj.hr.push({x: i, y: coords[i].meta.hr})
+    }
+    
     var chart_1 = document.createElement("div");
     chart_1.classList.add("chart");
     chart_1.id = "chart_1";
     document.getElementById("chart_zone").appendChild(chart_1);
-    var altTab = [];
-    for (var i = 0, lenCoords = coords.length;i < lenCoords; i++) {
-      altTab.push({x: i, y: coords[i].meta.ele});
-    }
     var chartOptions = {
       theme: "light1", // "light2", "dark1", "dark2"
     	zoomEnabled: true,
@@ -584,13 +590,41 @@ L.GPX = L.FeatureGroup.extend({
     	},
     	data: [
       	{
-      		// Change type to "bar", "area", "spline", "pie",etc.
       		type: "area",
       		dataPoints: altTab
       	}
     	]
     };
     var chart = new CanvasJS.Chart("chart_1", chartOptions);
+    chart.render();
+    
+    var chart_2 = document.createElement("div");
+    chart_2.classList.add("chart");
+    chart_2.id = "chart_2";
+    document.getElementById("chart_zone").appendChild(chart_2);
+    var chartOptions = {
+      theme: "light1", // "light2", "dark1", "dark2"
+    	zoomEnabled: true,
+    	animationEnabled: true,
+    	title:{
+    		text: "altitude"
+    	},
+    	axisY: {
+    		includeZero: false,
+    		lineThickness: 1
+    	},
+    	axisX: {
+    		includeZero: true,
+    		lineThickness: 1
+    	},
+    	data: [
+      	{
+      		type: "area",
+      		dataPoints: chartObj.hr
+      	}
+    	]
+    };
+    var chart = new CanvasJS.Chart("chart_2", chartOptions);
     chart.render();
     
     if (options.gpx_options.showDistance.enabled) {
