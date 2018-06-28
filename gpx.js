@@ -559,6 +559,8 @@ L.GPX = L.FeatureGroup.extend({
       coords.push(ll);
     }
     
+    var chart_1 = document.createElement("div", {id: "chart_1", class: "chart"});
+    document.getElementsByTagName("chart_zone").appendChild(chart_1);
     var altTab = [];
     for (var i = 0, lenCoords = coords.length;i < lenCoords; i++) {
       altTab.push({x: i, y: coords[i].meta.ele});
@@ -588,7 +590,6 @@ L.GPX = L.FeatureGroup.extend({
     };
     var chart = new CanvasJS.Chart("chart_1", chartOptions);
     chart.render();
-    document.getElementById("chart_1").style.display = "flex";
     
     if (options.gpx_options.showDistance.enabled) {
       if (distance_layer.length > 1) {
