@@ -674,7 +674,8 @@ L.GPX = L.FeatureGroup.extend({
         var td2 = document.createElement("td");
         td1.setAttribute("width", "25px");
         td1.setAttribute("bgcolor", colorThresholds[i]);
-        td2.appendChild(document.createTextNode(">" + valueThresholds[i]));
+        let threshMin = valueThresholds[i] - sep;
+        td2.appendChild(document.createTextNode(threshMin.toFixed(0) + " - " + valueThresholds[i].toFixed(0)));
         tr.appendChild(td1);
         tr.appendChild(td2);
         tbody.appendChild(tr);
