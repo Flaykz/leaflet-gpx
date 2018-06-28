@@ -588,6 +588,7 @@ L.GPX = L.FeatureGroup.extend({
     };
     var chart = new CanvasJS.Chart("chart_1", chartOptions);
     chart.render();
+    document.getElementById("chart_1").style.display = "flex";
     
     if (options.gpx_options.showDistance.enabled) {
       if (distance_layer.length > 1) {
