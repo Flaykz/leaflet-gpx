@@ -607,7 +607,7 @@ L.GPX = L.FeatureGroup.extend({
     	zoomEnabled: true,
     	animationEnabled: true,
     	title:{
-    		text: "altitude"
+    		text: "Heart Rate"
     	},
     	axisY: {
     		includeZero: false,
