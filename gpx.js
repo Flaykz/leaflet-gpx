@@ -572,6 +572,7 @@ L.GPX = L.FeatureGroup.extend({
     var chart_1 = document.createElement("div");
     chart_1.classList.add("chart");
     chart_1.id = "chart_1";
+    chart_1.style.height = "50%";
     document.getElementById("chart_zone").appendChild(chart_1);
     var chartOptions = {
       theme: "light1", // "light2", "dark1", "dark2"
@@ -601,6 +602,7 @@ L.GPX = L.FeatureGroup.extend({
     var chart_2 = document.createElement("div");
     chart_2.classList.add("chart");
     chart_2.id = "chart_2";
+    chart_2.style.height = "50%";
     document.getElementById("chart_zone").appendChild(chart_2);
     var chartOptions = {
       theme: "light1", // "light2", "dark1", "dark2"
