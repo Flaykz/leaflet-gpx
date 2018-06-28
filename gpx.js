@@ -559,12 +559,10 @@ L.GPX = L.FeatureGroup.extend({
       coords.push(ll);
     }
     
-    var altTab = [];
     var chartObj = {};
     chartObj.ele = [];
     chartObj.hr = [];
     for (var i = 0, lenCoords = coords.length;i < lenCoords; i++) {
-      altTab.push({x: i, y: coords[i].meta.ele});
       chartObj.ele.push({x: i, y: coords[i].meta.ele});
       chartObj.hr.push({x: i, y: coords[i].meta.hr})
     }
@@ -592,7 +590,7 @@ L.GPX = L.FeatureGroup.extend({
     	data: [
       	{
       		type: "area",
-      		dataPoints: altTab
+      		dataPoints: chartObj.ele
       	}
     	]
     };
@@ -669,6 +667,21 @@ L.GPX = L.FeatureGroup.extend({
         var colorThresholds = ['#0000FF', '#0040FF', '#0080FF', '#00FFB0',
           '#00E000', '#80FF00', '#FFFF00', '#FFC000', '#FF0000'];
       }
+      var tbody = document.createElement("tbody");
+      for (let i = 0, len = valueThresholds.length; i < len; i++) {
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        td1.setAttribute("width", "25px");
+        td1.setAttribute("bgcolor", colorThresholds[i]);
+        td2.appendChild(document.createTextNode(">" + valueThresholds[i]));
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tbody.appendChild(tr);
+      }
+      var divTab = document.createElement("div");
+      divTab.id = "color_table"
+      divTab.appendChild(tbody);
       var coordsPolyline = {};
       var lastColor = null;
       var segment = 0;
