@@ -630,6 +630,8 @@ L.GPX = L.FeatureGroup.extend({
     if (options.gpx_options.showDistance.enabled) {
       if (distance_layer.length > 1) {
         distanceMarkers.addTo(this);
+        obj["Distance"] = distanceMarkers;
+        this.addControl(new L.Control.Layers({}, obj, {collapsed: false}));
       }
     }
     
@@ -675,7 +677,7 @@ L.GPX = L.FeatureGroup.extend({
         td1.setAttribute("width", "25px");
         td1.setAttribute("bgcolor", colorThresholds[i]);
         let threshMin = valueThresholds[i] - sep;
-        td2.appendChild(document.createTextNode(threshMin.toFixed(0) + " - " + valueThresholds[i].toFixed(0)));
+        td2.appendChild(document.createTextNode(" " + threshMin.toFixed(0) + " - " + valueThresholds[i].toFixed(0)));
         tr.appendChild(td1);
         tr.appendChild(td2);
         tbody.appendChild(tr);
