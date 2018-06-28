@@ -682,6 +682,7 @@ L.GPX = L.FeatureGroup.extend({
       var divTab = document.createElement("div");
       divTab.id = "color_table"
       divTab.appendChild(tbody);
+      document.getElementById("sidebar").appendChild(divTab);
       var coordsPolyline = {};
       var lastColor = null;
       var segment = 0;
