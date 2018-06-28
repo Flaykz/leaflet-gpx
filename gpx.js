@@ -630,8 +630,6 @@ L.GPX = L.FeatureGroup.extend({
     if (options.gpx_options.showDistance.enabled) {
       if (distance_layer.length > 1) {
         distanceMarkers.addTo(this);
-        obj["Distance"] = distanceMarkers;
-        this.addControl(new L.Control.Layers({}, obj, {collapsed: false}));
       }
     }
     
