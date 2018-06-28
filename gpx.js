@@ -563,20 +563,30 @@ L.GPX = L.FeatureGroup.extend({
     for (var i = 0, lenCoords = coords.length;i < lenCoords; i++) {
       altTab.push({x: i, y: coords[i].meta.ele});
     }
-    var chart = new CanvasJS.Chart("chart_1", {
+    var chartOptions = {
       theme: "light1", // "light2", "dark1", "dark2"
-    	animationEnabled: true, // change to true		
+    	zoomEnabled: true,
+    	animationEnabled: true,
     	title:{
     		text: "altitude"
     	},
+    	axisY: {
+    		includeZero: false,
+    		lineThickness: 1
+    	},
+    	axisX: {
+    		includeZero: true,
+    		lineThickness: 1
+    	},
     	data: [
-    	{
-    		// Change type to "bar", "area", "spline", "pie",etc.
-    		type: "area",
-    		dataPoints: altTab
-    	}
+      	{
+      		// Change type to "bar", "area", "spline", "pie",etc.
+      		type: "area",
+      		dataPoints: altTab
+      	}
     	]
-    });
+    };
+    var chart = new CanvasJS.Chart("chart_1", chartOptions);
     chart.render();
     
     if (options.gpx_options.showDistance.enabled) {
