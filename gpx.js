@@ -560,7 +560,7 @@ L.GPX = L.FeatureGroup.extend({
     }
     
     var chart_1 = document.createElement("div", {id: "chart_1", class: "chart"});
-    document.getElementsByTagName("chart_zone").appendChild(chart_1);
+    document.getElementById("chart_zone").appendChild(chart_1);
     var altTab = [];
     for (var i = 0, lenCoords = coords.length;i < lenCoords; i++) {
       altTab.push({x: i, y: coords[i].meta.ele});
