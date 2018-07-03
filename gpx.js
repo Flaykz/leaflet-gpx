@@ -592,37 +592,6 @@ L.GPX = L.FeatureGroup.extend({
     divGen.classList.add("charts");
     var nbChart = document.getElementById("chart_zone").childNodes.length;
     var height = 100 / nbChart;
-    var chartOptions = {
-      theme: "light1", // "light2", "dark1", "dark2"
-      zoomEnabled: true,
-      animationEnabled: true,
-      // title: {
-      //   text: "altitude"
-      // },
-      axisY: {
-        includeZero: false,
-        lineThickness: 1
-      },
-      axisX: {
-        includeZero: true,
-        lineThickness: 1
-      },
-      data: [{
-        type: "area"
-        // dataPoints: chartObj.ele
-      }]
-    };
-
-    var chart_1 = document.createElement("div");
-    chart_1.classList.add("chart");
-    chart_1.id = "chart_1";
-    var chart_2 = document.createElement("div");
-    chart_2.classList.add("chart");
-    chart_2.id = "chart_2";
-    divGen.append(chart_1);
-    divGen.append(chart_2);
-    document.getElementById("chart_zone").appendChild(divGen);
-
     var style = document.getElementById("JScustomCSS");
     var styleSheet;
     if (style == null) {
@@ -636,14 +605,41 @@ L.GPX = L.FeatureGroup.extend({
     }
     styleSheet.insertRule('.chart {height: 50%;}', 0);
     styleSheet.insertRule('.charts {height: ' + height.toFixed(0) + '%}', 0);
-
+    var chartOptions = {
+      theme: "light1", // "light2", "dark1", "dark2"
+      zoomEnabled: true,
+      animationEnabled: true,
+      axisY: {
+        includeZero: false,
+        lineThickness: 1
+      },
+      axisX: {
+        includeZero: true,
+        lineThickness: 1
+      },
+      data: [{
+        type: "area"
+      }]
+    };
+    var prefix = "chart_" + this._filename.split('.')[0]
+    var chart_1 = document.createElement("div");
+    chart_1.classList.add("chart");
+    var chart_1_id = prefix + "_1"
+    chart_1.id = chart_1_id;
+    var chart_2 = document.createElement("div");
+    chart_2.classList.add("chart");
+    var chart_2_id = prefix + "_2"
+    chart_2.id = chart_2_id;
+    divGen.append(chart_1);
+    divGen.append(chart_2);
+    document.getElementById("chart_zone").appendChild(divGen);
     chartOptions.title = { text: "Altitude" };
     chartOptions.data[0].dataPoints = chartObj.ele;
-    var chart = new CanvasJS.Chart("chart_1", chartOptions);
+    var chart = new CanvasJS.Chart(chart_1_id, chartOptions);
     chart.render();
     chartOptions.title = { text: "Heart Rate" };
     chartOptions.data[0].dataPoints = chartObj.hr;
-    var chart = new CanvasJS.Chart("chart_2", chartOptions);
+    var chart = new CanvasJS.Chart(chart_2_id, chartOptions);
     chart.render();
 
     if (options.gpx_options.showDistance.enabled) {
