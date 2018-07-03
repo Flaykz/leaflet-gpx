@@ -587,7 +587,7 @@ L.GPX = L.FeatureGroup.extend({
       chartObj.ele.push({ x: i, y: coords[i].meta.ele });
       chartObj.hr.push({ x: i, y: coords[i].meta.hr })
     }
-
+    document.getElementById("chart_zone").style.height = "40%";
     var divGen = document.createElement("div");
     divGen.classList.add("charts");
     var nbChart = document.getElementById("chart_zone").childNodes.length;
@@ -636,11 +636,6 @@ L.GPX = L.FeatureGroup.extend({
     }
     styleSheet.insertRule('.chart {height: 50%;}', 0);
     styleSheet.insertRule('.charts {height: ' + height.toFixed(0) + '%}', 0);
-
-    // style.innerHTML = '';
-    // style.innerHTML = '.chart {height: 50%;}';
-    // style.innerHTML += '.charts {height: ' + height.toFixed(0) + '%}';
-    // document.body.appendChild(style);
 
     chartOptions.title = { text: "Altitude" };
     chartOptions.data[0].dataPoints = chartObj.ele;
