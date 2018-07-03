@@ -622,13 +622,26 @@ L.GPX = L.FeatureGroup.extend({
     divGen.append(chart_1);
     divGen.append(chart_2);
     document.getElementById("chart_zone").appendChild(divGen);
-    
-    var style = document.createElement("style");
-    style.id = "customCSS";
-    style.innerHTML = '.chart {height: 50%;}';
-    style.innerHTML += '.charts {height: ' + height.toFixed(0) + '%}';
-    document.body.appendChild(style);
-    
+
+    var style = document.getElementById("JScustomCSS");
+    var styleSheet;
+    if (style == null) {
+      style = document.createElement("style");
+      style.id = "JScustomCSS";
+      document.head.appendChild(style);
+    }
+    styleSheet = style.sheet;
+    for (let i = 0; i < styleSheet.cssRules.length; i++) {
+      styleSheet.deleteRule(0);
+    }
+    styleSheet.insertRule('.chart {height: 50%;}', 0);
+    styleSheet.insertRule('.charts {height: ' + height.toFixed(0) + '%}', 0);
+
+    // style.innerHTML = '';
+    // style.innerHTML = '.chart {height: 50%;}';
+    // style.innerHTML += '.charts {height: ' + height.toFixed(0) + '%}';
+    // document.body.appendChild(style);
+
     chartOptions.title = { text: "Altitude" };
     chartOptions.data[0].dataPoints = chartObj.ele;
     var chart = new CanvasJS.Chart("chart_1", chartOptions);
