@@ -588,11 +588,15 @@ L.GPX = L.FeatureGroup.extend({
       chartObj.hr.push({ x: i, y: coords[i].meta.hr })
     }
 
+    var divGen = document.createElement("div");
+    divGen.classList.add("chart");
+    
     var chart_1 = document.createElement("div");
-    chart_1.classList.add("chart");
     chart_1.id = "chart_1";
     chart_1.style.height = "50%";
-    document.getElementById("chart_zone").appendChild(chart_1);
+    var div = divGen;
+    div.append(chart_1);
+    document.getElementById("chart_zone").appendChild(div);
     var chartOptions = {
       theme: "light1", // "light2", "dark1", "dark2"
       zoomEnabled: true,
@@ -617,10 +621,11 @@ L.GPX = L.FeatureGroup.extend({
     chart.render();
 
     var chart_2 = document.createElement("div");
-    chart_2.classList.add("chart");
     chart_2.id = "chart_2";
     chart_2.style.height = "50%";
-    document.getElementById("chart_zone").appendChild(chart_2);
+    var div = divGen;
+    div.append(chart_2);
+    document.getElementById("chart_zone").appendChild(div);
     var chartOptions = {
       theme: "light1", // "light2", "dark1", "dark2"
       zoomEnabled: true,
