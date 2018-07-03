@@ -605,6 +605,9 @@ L.GPX = L.FeatureGroup.extend({
     }
     styleSheet.insertRule('.chart {height: 50%;}', 0);
     styleSheet.insertRule('.charts {height: ' + height.toFixed(0) + '%}', 0);
+    style = document.getElementById("customCSS");
+    styleSheet = style.sheet;
+    styleSheet.insertRule('.leaflet-google-mutant div:last-child {display: none;}', 0);
     var chartOptions = {
       theme: "light1", // "light2", "dark1", "dark2"
       zoomEnabled: true,
