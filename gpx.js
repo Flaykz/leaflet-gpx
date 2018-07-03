@@ -702,7 +702,39 @@ L.GPX = L.FeatureGroup.extend({
       divTab.appendChild(tbody);
       var div = document.createElement("div");
       div.classList.add("track");
-      div.appendChild(divTab);
+      var divInfo = document.createElement("div");
+			divInfo.classList.add("track_infos");
+			divInfo.appendChild(document.createTextNode(""));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Name : " + this.get_name()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Distance : " + this.m_to_km(this.get_distance()).toFixed(1) + " Km"));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Start Time : " + this.get_start_time()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("End Time : " + this.get_end_time()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Moving Time : " + this.get_duration_string(this.get_moving_time(), true)));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Total Time : " + this.get_duration_string(this.get_total_time(), true)));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Moving Space : " + this.get_moving_pace()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Moving Speed : " + this.get_moving_speed()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Total Speed : " + this.get_total_speed()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Elevation Min : " + this.get_elevation_min()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Elevation Max : " + this.get_elevation_max()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss()));
+			divInfo.appendChild(document.createElement("br"))
+			divInfo.appendChild(document.createTextNode("Average HR : " + this.get_average_hr()));
+			div.appendChild(divTab);
+			div.appendChild(divInfo);
       document.getElementById("sidebar").appendChild(div);
       var coordsPolyline = {};
       var lastColor = null;
