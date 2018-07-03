@@ -624,11 +624,11 @@ L.GPX = L.FeatureGroup.extend({
     divGen.append(chart_2);
     document.getElementById("chart_zone").appendChild(divGen);
 
-    chartOptions.title.text = "Altitude";
+    chartOptions.title = {text: "Altitude"};
     chartOptions.data[0].dataPoints = chartObj.ele;
     var chart = new CanvasJS.Chart("chart_1", chartOptions);
     chart.render();
-    chartOptions.title.text = "Heart Rate";
+    chartOptions.title = {text: "Heart Rate"};
     chartOptions.data[0].dataPoints = chartObj.hr;
     var chart = new CanvasJS.Chart("chart_2", chartOptions);
     chart.render();
