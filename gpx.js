@@ -633,13 +633,15 @@ L.GPX = L.FeatureGroup.extend({
     divGen.append(chart_1);
     divGen.append(chart_2);
     document.getElementById("chart_zone").appendChild(divGen);
-    chartOptions.title = { text: "Altitude" };
-    chartOptions.data[0].dataPoints = chartObj.ele;
-    var chart = new CanvasJS.Chart(chart_1_id, chartOptions);
+    let chartOptions_1 = chartOptions;
+    chartOptions_1.title = { text: "Altitude" };
+    chartOptions_1.data[0].dataPoints = chartObj.ele;
+    var chart = new CanvasJS.Chart(chart_1_id, chartOptions_1);
     chart.render();
-    chartOptions.title = { text: "Heart Rate" };
-    chartOptions.data[0].dataPoints = chartObj.hr;
-    var chart = new CanvasJS.Chart(chart_2_id, chartOptions);
+    let chartOptions_2 = chartOptions;
+    chartOptions_2.title = { text: "Heart Rate" };
+    chartOptions_2.data[0].dataPoints = chartObj.hr;
+    var chart = new CanvasJS.Chart(chart_2_id, chartOptions_2);
     chart.render();
 
     if (options.gpx_options.showDistance.enabled) {
