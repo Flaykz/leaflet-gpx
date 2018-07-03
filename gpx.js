@@ -587,7 +587,7 @@ L.GPX = L.FeatureGroup.extend({
       chartObj.ele.push({ x: i, y: coords[i].meta.ele });
       chartObj.hr.push({ x: i, y: coords[i].meta.hr })
     }
-    document.getElementById("chart_zone").style.height = "40%";
+    document.getElementById("chart_zone").style.height = "60%";
     var divGen = document.createElement("div");
     divGen.classList.add("charts");
     var nbChart = document.getElementById("chart_zone").childNodes.length;
