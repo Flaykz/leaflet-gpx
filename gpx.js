@@ -145,6 +145,9 @@ L.GPX = L.FeatureGroup.extend({
   to_miles: function(v) { return v / 1.60934; },
   to_ft: function(v) { return v * 3.28084; },
   m_to_km: function(v) { return v / 1000; },
+  km_to_m: function(v) { return v * 1000; },
+  ft_to_mi: function(v) { return v / 0.000189394; },
+  mi_to_ft: function(v) { return v * 5280; },
   m_to_mi: function(v) { return v / 1609.34; },
 
   get_date_formated: function(v) {
@@ -587,19 +590,24 @@ L.GPX = L.FeatureGroup.extend({
     var chartObj = {};
     chartObj.ele = [];
     chartObj.hr = [];
-    
+
     if (options.gpx_options.imperial) {
       var ele_data = this.get_elevation_data_imp();
       var hr_data = this.get_heartrate_data_imp();
-    } else {
+      for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
+        chartObj.ele.push({ x: this.mi_to_ft(ele_data[i][0]).toFixed(1), y: ele_data[i][1].toFixed(1) });
+        chartObj.hr.push({ x: this.mi_to_ft(hr_data[i][0]).toFixed(1), y: hr_data[i][1] })
+      }
+    }
+    else {
       var ele_data = this.get_elevation_data();
       var hr_data = this.get_heartrate_data();
+      for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
+        chartObj.ele.push({ x: this.km_to_m(ele_data[i][0]).toFixed(1), y: ele_data[i][1].toFixed(1) });
+        chartObj.hr.push({ x: this.km_to_m(hr_data[i][0]).toFixed(1), y: hr_data[i][1] })
+      }
     }
-    
-    for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
-      chartObj.ele.push({ x: ele_data[i][0].toFixed(2), y: ele_data[i][1].toFixed(2) });
-      chartObj.hr.push({ x: hr_data[i][0].toFixed(2), y: hr_data[i][1].toFixed(2) })
-    }
+
     document.getElementById("chart_zone").style.height = "100%";
     var divGen = document.createElement("div");
     divGen.classList.add("charts");
@@ -755,12 +763,6 @@ L.GPX = L.FeatureGroup.extend({
         divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain_imp().toFixed(2)));
         divInfo.appendChild(document.createElement("br"))
         divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss_imp().toFixed(2)));
-        // divInfo.appendChild(document.createElement("br"))
-        // divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data_imp().toFixed(2)));
-        // divInfo.appendChild(document.createElement("br"))
-        // divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data_imp().toFixed(2)));
-        // divInfo.appendChild(document.createElement("br"))
-        // divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data_imp().toFixed(2)));
       }
       else {
         divInfo.appendChild(document.createTextNode("Moving Pace : " + this.get_moving_pace().toFixed(2)));
@@ -776,12 +778,6 @@ L.GPX = L.FeatureGroup.extend({
         divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain().toFixed(2)));
         divInfo.appendChild(document.createElement("br"))
         divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss().toFixed(2)));
-        // divInfo.appendChild(document.createElement("br"))
-        // divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data().toFixed(2)));
-        // divInfo.appendChild(document.createElement("br"))
-        // divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data().toFixed(2)));
-        // divInfo.appendChild(document.createElement("br"))
-        // divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data().toFixed(2)));
       }
       divInfo.appendChild(document.createElement("br"))
       divInfo.appendChild(document.createTextNode("Average HR : " + this.get_average_hr()));
