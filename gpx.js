@@ -81,7 +81,7 @@ var _DEFAULT_GPX_OPTS = {
   }
 };
 L.GPX = L.FeatureGroup.extend({
-  initialize: function(gpx, filename, map, options) {
+  initialize: function(gpx, nbGpx, map, options) {
     options.max_point_interval = options.max_point_interval || _MAX_POINT_INTERVAL_MS;
     options.marker_options = this._merge_objs(
       _DEFAULT_MARKER_OPTS,
@@ -96,14 +96,15 @@ L.GPX = L.FeatureGroup.extend({
     // Base icon class for track pins.
     L.GPXTrackIcon = L.Icon.extend({ options: options.marker_options });
 
-    this._gpx = gpx;
+    this._gpx = gpx.data;
     this._layers = {};
     this._init_info();
-    this._filename = filename;
+    this._filename = gpx.name;
     this._map = map;
+    this._nbGpx = nbGpx;
 
-    if (gpx) {
-      this._parse(gpx, options, this.options.async);
+    if (this._gpx) {
+      this._parse(this._gpx, options, this.options.async);
     }
   },
 
@@ -637,8 +638,8 @@ L.GPX = L.FeatureGroup.extend({
     document.getElementById("map_zone").style.height = "50%";
     var divGen = document.createElement("div");
     divGen.classList.add("charts");
-    var nbChart = document.getElementById("chart_zone").childNodes.length;
-    var height = 100 / nbChart;
+    // var nbChart = document.getElementById("chart_zone").childNodes.length;
+    var height = 100 / this._nbGpx;
     var style = document.getElementById("JScustomCSS");
     var styleSheet;
     if (style == null) {
