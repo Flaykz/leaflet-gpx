@@ -746,12 +746,12 @@ L.GPX = L.FeatureGroup.extend({
         divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain_imp().toFixed(2)));
         divInfo.appendChild(document.createElement("br"))
         divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss_imp().toFixed(2)));
-        divInfo.appendChild(document.createElement("br"))
-        divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data_imp().toFixed(2)));
-        divInfo.appendChild(document.createElement("br"))
-        divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data_imp().toFixed(2)));
-        divInfo.appendChild(document.createElement("br"))
-        divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data_imp().toFixed(2)));
+        // divInfo.appendChild(document.createElement("br"))
+        // divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data_imp().toFixed(2)));
+        // divInfo.appendChild(document.createElement("br"))
+        // divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data_imp().toFixed(2)));
+        // divInfo.appendChild(document.createElement("br"))
+        // divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data_imp().toFixed(2)));
       }
       else {
         divInfo.appendChild(document.createTextNode("Moving Pace : " + this.get_moving_pace().toFixed(2)));
@@ -767,12 +767,12 @@ L.GPX = L.FeatureGroup.extend({
         divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain().toFixed(2)));
         divInfo.appendChild(document.createElement("br"))
         divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss().toFixed(2)));
-        divInfo.appendChild(document.createElement("br"))
-        divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data().toFixed(2)));
-        divInfo.appendChild(document.createElement("br"))
-        divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data().toFixed(2)));
-        divInfo.appendChild(document.createElement("br"))
-        divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data().toFixed(2)));
+        // divInfo.appendChild(document.createElement("br"))
+        // divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data().toFixed(2)));
+        // divInfo.appendChild(document.createElement("br"))
+        // divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data().toFixed(2)));
+        // divInfo.appendChild(document.createElement("br"))
+        // divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data().toFixed(2)));
       }
       divInfo.appendChild(document.createElement("br"))
       divInfo.appendChild(document.createTextNode("Average HR : " + this.get_average_hr()));
