@@ -597,10 +597,10 @@ L.GPX = L.FeatureGroup.extend({
       let la = "";
       let lb = "";
       for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
-        let a = this.mi_to_ft(ele_data[i][0]).toFixed(0);
-        let b = this.mi_to_ft(hr_data[i][0]).toFixed(0);
+        let a = this.mi_to_ft(ele_data[i][0]);
+        let b = this.mi_to_ft(hr_data[i][0]);
         if (la != a) {
-          chartObj.ele.push({ x: a, y: ele_data[i][1].toFixed(0) });
+          chartObj.ele.push({ x: a, y: ele_data[i][1] });
         }
         if (lb != b) {
           chartObj.hr.push({ x: b, y: hr_data[i][1] })
@@ -615,10 +615,10 @@ L.GPX = L.FeatureGroup.extend({
       let la = "";
       let lb = "";
       for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
-        let a = this.km_to_m(ele_data[i][0]).toFixed(0);
-        let b = this.km_to_m(hr_data[i][0]).toFixed(0);
+        let a = this.km_to_m(ele_data[i][0]);
+        let b = this.km_to_m(hr_data[i][0]);
         if (la != a) {
-          chartObj.ele.push({ x: a, y: ele_data[i][1].toFixed(0) });
+          chartObj.ele.push({ x: a, y: ele_data[i][1] });
         }
         if (lb != b) {
           chartObj.hr.push({ x: b, y: hr_data[i][1] })
