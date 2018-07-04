@@ -66,9 +66,9 @@ var _DEFAULT_POLYLINE_OPTS = {
 };
 var _DEFAULT_GPX_OPTS = {
   parseElements: ['track', 'route', 'waypoint'],
+  imperial: false,
   showDistance: {
     enabled: false,
-    imperial: false,
     iconColor: 'blue',
     textColor: 'white',
     interval: 1,
@@ -76,7 +76,6 @@ var _DEFAULT_GPX_OPTS = {
   },
   showColor: {
     enabled: true,
-    imperial: false,
     data: 'alt',
     thresholds: []
   }
@@ -174,8 +173,8 @@ L.GPX = L.FeatureGroup.extend({
   get_total_speed_imp: function() { return this.to_miles(this.m_to_km(this.get_distance())) / (this.get_total_time() / (3600 * 1000)); },
 
   get_elevation_gain: function() { return this._info.elevation.gain; },
-  get_elevation_loss: function() { return this._info.elevation.loss; },
   get_elevation_gain_imp: function() { return this.to_ft(this.get_elevation_gain()); },
+  get_elevation_loss: function() { return this._info.elevation.loss; },
   get_elevation_loss_imp: function() { return this.to_ft(this.get_elevation_loss()); },
   get_elevation_data: function() {
     var _this = this;
@@ -194,8 +193,8 @@ L.GPX = L.FeatureGroup.extend({
       });
   },
   get_elevation_max: function() { return this._info.elevation.max; },
-  get_elevation_min: function() { return this._info.elevation.min; },
   get_elevation_max_imp: function() { return this.to_ft(this.get_elevation_max()); },
+  get_elevation_min: function() { return this._info.elevation.min; },
   get_elevation_min_imp: function() { return this.to_ft(this.get_elevation_min()); },
 
   get_average_hr: function() { return this._info.hr.avg; },
@@ -225,14 +224,6 @@ L.GPX = L.FeatureGroup.extend({
           function(a, b) { return a.toFixed(2) + ' km, ' + b.toFixed(0) + ' rpm'; });
       });
   },
-  get_temp_data: function() {
-    var _this = this;
-    return this._info.atemp._points.map(
-      function(p) {
-        return _this._prepare_data_point(p, _this.m_to_km, null,
-          function(a, b) { return a.toFixed(2) + ' km, ' + b.toFixed(0) + ' degrees'; });
-      });
-  },
   get_cadence_data_imp: function() {
     var _this = this;
     return this._info.cad._points.map(
@@ -241,6 +232,15 @@ L.GPX = L.FeatureGroup.extend({
           function(a, b) { return a.toFixed(2) + ' mi, ' + b.toFixed(0) + ' rpm'; });
       });
   },
+  get_temp_data: function() {
+    var _this = this;
+    return this._info.atemp._points.map(
+      function(p) {
+        return _this._prepare_data_point(p, _this.m_to_km, null,
+          function(a, b) { return a.toFixed(2) + ' km, ' + b.toFixed(0) + ' degrees'; });
+      });
+  },
+
   get_temp_data_imp: function() {
     var _this = this;
     return this._info.atemp._points.map(
@@ -540,7 +540,7 @@ L.GPX = L.FeatureGroup.extend({
         ll.meta.dist = this._info.length;
         if (options.gpx_options.showDistance.enabled) {
           this.currentDistance = this.m_to_km(this._info.length);
-          if (options.gpx_options.showDistance.imperial) {
+          if (options.gpx_options.imperial) {
             this.currentDistance = this.to_miles(this.currentDistance);
           }
           let next_distance = options.gpx_options.showDistance.interval * distance_iterator;
@@ -679,7 +679,7 @@ L.GPX = L.FeatureGroup.extend({
       else {
         var ele_max = this.get_elevation_max();
         var ele_min = this.get_elevation_min();
-        if (options.gpx_options.showDistance.imperial) {
+        if (options.gpx_options.imperial) {
           ele_max = this.get_elevation_max_imp();
           ele_min = this.get_elevation_min_imp();
         }
@@ -717,7 +717,12 @@ L.GPX = L.FeatureGroup.extend({
       divInfo.appendChild(document.createElement("br"))
       divInfo.appendChild(document.createTextNode("Name : " + this.get_name()));
       divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Distance : " + this.m_to_km(this.get_distance()).toFixed(1) + " Km"));
+      if (options.gpx_options.imperial) {
+        divInfo.appendChild(document.createTextNode("Distance : " + this.get_distance_imp().toFixed(1) + " Mi"));
+      }
+      else {
+        divInfo.appendChild(document.createTextNode("Distance : " + this.m_to_km(this.get_distance()).toFixed(1) + " Km"));
+      }
       divInfo.appendChild(document.createElement("br"))
       divInfo.appendChild(document.createTextNode("Start Time : " + this.get_date_formated(this.get_start_time())));
       divInfo.appendChild(document.createElement("br"))
@@ -727,21 +732,53 @@ L.GPX = L.FeatureGroup.extend({
       divInfo.appendChild(document.createElement("br"))
       divInfo.appendChild(document.createTextNode("Total Time : " + this.get_duration_string(this.get_total_time(), true)));
       divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Moving Space : " + this.get_moving_pace().toFixed(2)));
-      divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Moving Speed : " + this.get_moving_speed().toFixed(2)));
-      divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Total Speed : " + this.get_total_speed().toFixed(2)));
-      divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Elevation Min : " + this.get_elevation_min()));
-      divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Elevation Max : " + this.get_elevation_max()));
-      divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain().toFixed(2)));
-      divInfo.appendChild(document.createElement("br"))
-      divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss().toFixed(2)));
+      if (options.gpx_options.imperial) {
+        divInfo.appendChild(document.createTextNode("Moving Pace : " + this.get_moving_pace_imp().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Moving Speed : " + this.get_moving_speed_imp().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Total Speed : " + this.get_total_speed_imp().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Min : " + this.get_elevation_min_imp()));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Max : " + this.get_elevation_max_imp()));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain_imp().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss_imp().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data_imp().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data_imp().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data_imp().toFixed(2)));
+      }
+      else {
+        divInfo.appendChild(document.createTextNode("Moving Pace : " + this.get_moving_pace().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Moving Speed : " + this.get_moving_speed().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Total Speed : " + this.get_total_speed().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Min : " + this.get_elevation_min()));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Max : " + this.get_elevation_max()));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Gain : " + this.get_elevation_gain().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Loss : " + this.get_elevation_loss().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Elevation Data : " + this.get_elevation_data().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("HR Data : " + this.get_heartrate_data().toFixed(2)));
+        divInfo.appendChild(document.createElement("br"))
+        divInfo.appendChild(document.createTextNode("Cadence Data : " + this.get_cadence_data().toFixed(2)));
+      }
       divInfo.appendChild(document.createElement("br"))
       divInfo.appendChild(document.createTextNode("Average HR : " + this.get_average_hr()));
+      divInfo.appendChild(document.createElement("br"))
+      divInfo.appendChild(document.createTextNode("Average cad : " + this.get_average_cadence()));
+
       div.appendChild(divTab);
       div.appendChild(divInfo);
       if (document.getElementById("sidebar") == null) {
