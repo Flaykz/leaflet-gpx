@@ -628,11 +628,13 @@ L.GPX = L.FeatureGroup.extend({
       }
     }
     if (options.gpx_options.imperial) {
-      var maxX = this.mi_to_ft(ele_data[i-1][0]).toFixed(0);
-    } else {
-      var maxX = this.km_to_m(ele_data[i-1][0]).toFixed(0);
+      var maxX = this.mi_to_ft(ele_data[i - 1][0]).toFixed(0);
     }
-    document.getElementById("chart_zone").style.height = "100%";
+    else {
+      var maxX = this.km_to_m(ele_data[i - 1][0]).toFixed(0);
+    }
+    document.getElementById("chart_zone").style.height = "50%";
+    document.getElementById("map_zone").style.height = "50%";
     var divGen = document.createElement("div");
     divGen.classList.add("charts");
     var nbChart = document.getElementById("chart_zone").childNodes.length;
