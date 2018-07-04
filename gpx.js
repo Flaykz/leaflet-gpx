@@ -150,7 +150,7 @@ L.GPX = L.FeatureGroup.extend({
 
   get_date_formated: function(v) {
     let d = new Date(v);
-    return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+    return d.getUTCDate().padStart(2, "0") + "/" + d.getUTCMonth().padStart(2, "0") + "/" + d.getUTCFullYear() + " " + d.getUTCHours().padStart(2, "0") + ":" + d.getUTCMinutes().padStart(2, "0") + ":" + d.getUTCSeconds().padStart(2, "0");
   },
   get_name: function() { return this._info.name; },
   get_desc: function() { return this._info.desc; },
