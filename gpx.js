@@ -587,9 +587,18 @@ L.GPX = L.FeatureGroup.extend({
     var chartObj = {};
     chartObj.ele = [];
     chartObj.hr = [];
-    for (var i = 0, lenCoords = coords.length; i < lenCoords; i++) {
-      chartObj.ele.push({ x: i, y: coords[i].meta.ele });
-      chartObj.hr.push({ x: i, y: coords[i].meta.hr })
+    
+    if (options.gpx_options.imperial) {
+      var ele_data = this.get_elevation_data_imp();
+      var hr_data = this.get_heartrate_data_imp();
+    } else {
+      var ele_data = this.get_elevation_data();
+      var hr_data = this.get_heartrate_data();
+    }
+    
+    for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
+      chartObj.ele.push({ x: ele_data[i][0].toFixed(2), y: ele_data[i][1].toFixed(2) });
+      chartObj.hr.push({ x: hr_data[i][0].toFixed(2), y: hr_data[i][1].toFixed(2) })
     }
     document.getElementById("chart_zone").style.height = "100%";
     var divGen = document.createElement("div");
