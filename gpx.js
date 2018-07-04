@@ -594,17 +594,37 @@ L.GPX = L.FeatureGroup.extend({
     if (options.gpx_options.imperial) {
       var ele_data = this.get_elevation_data_imp();
       var hr_data = this.get_heartrate_data_imp();
+      let la = "";
+      let lb = "";
       for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
-        chartObj.ele.push({ x: this.mi_to_ft(ele_data[i][0]).toFixed(1), y: ele_data[i][1].toFixed(1) });
-        chartObj.hr.push({ x: this.mi_to_ft(hr_data[i][0]).toFixed(1), y: hr_data[i][1] })
+        let a = this.mi_to_ft(ele_data[i][0]).toFixed(1);
+        let b = this.mi_to_ft(hr_data[i][0]).toFixed(1);
+        if (la != a) {
+          chartObj.ele.push({ x: a, y: ele_data[i][1].toFixed(1) });
+        }
+        if (lb != b) {
+          chartObj.hr.push({ x: b, y: hr_data[i][1] })
+        }
+        la = a;
+        lb = b;
       }
     }
     else {
       var ele_data = this.get_elevation_data();
       var hr_data = this.get_heartrate_data();
+      let la = "";
+      let lb = "";
       for (var i = 0, lenCoords = ele_data.length; i < lenCoords; i++) {
-        chartObj.ele.push({ x: this.km_to_m(ele_data[i][0]).toFixed(1), y: ele_data[i][1].toFixed(1) });
-        chartObj.hr.push({ x: this.km_to_m(hr_data[i][0]).toFixed(1), y: hr_data[i][1] })
+        let a = this.km_to_m(ele_data[i][0]).toFixed(1);
+        let b = this.km_to_m(hr_data[i][0]).toFixed(1);
+        if (la != a) {
+          chartObj.ele.push({ x: a, y: ele_data[i][1].toFixed(1) });
+        }
+        if (lb != b) {
+          chartObj.hr.push({ x: b, y: hr_data[i][1] })
+        }
+        la = a;
+        lb = b;
       }
     }
 
