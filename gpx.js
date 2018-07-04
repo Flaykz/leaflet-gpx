@@ -740,6 +740,11 @@ L.GPX = L.FeatureGroup.extend({
       divInfo.appendChild(document.createTextNode("Average HR : " + this.get_average_hr()));
       div.appendChild(divTab);
       div.appendChild(divInfo);
+      if (document.getElementById("sidebar") == null) {
+        let sidebar = document.createElement("div");
+        sidebar.id = "sidebar";
+        document.getElementById("map").parentNode.insertBefore(sidebar, document.getElementById("map").nextSibling);
+      }
       document.getElementById("sidebar").appendChild(div);
       var coordsPolyline = {};
       var lastColor = null;
