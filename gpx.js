@@ -650,7 +650,7 @@ L.GPX = L.FeatureGroup.extend({
     styleSheet = style.sheet;
     styleSheet.insertRule('.leaflet-google-mutant div:last-child {display: none;}', 0);
     var chartOptions = {
-      theme: "light1", // "light2", "dark1", "dark2"
+      theme: "dark1", // "light2", "dark1", "dark2"
       zoomEnabled: true,
       animationEnabled: true,
       axisY: {
