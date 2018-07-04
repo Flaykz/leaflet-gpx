@@ -627,7 +627,11 @@ L.GPX = L.FeatureGroup.extend({
         lb = b;
       }
     }
-
+    if (options.gpx_options.imperial) {
+      var maxX = this.mi_to_ft(ele_data[i-1][0]).toFixed(0);
+    } else {
+      var maxX = this.km_to_m(ele_data[i-1][0]).toFixed(0);
+    }
     document.getElementById("chart_zone").style.height = "100%";
     var divGen = document.createElement("div");
     divGen.classList.add("charts");
@@ -659,6 +663,7 @@ L.GPX = L.FeatureGroup.extend({
       },
       axisX: {
         includeZero: true,
+        maximum: maxX,
         lineThickness: 1
       },
       data: [{
